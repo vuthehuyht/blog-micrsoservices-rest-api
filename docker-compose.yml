@@ -1,0 +1,27 @@
+services:
+  mysql:
+    image: mysql:latest
+    restart: always
+    ports:
+      - 3306:3306
+    networks:
+      - blog-network
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+
+  blog-microservices-rest-api:
+    build: .
+    image: blog-microservices-rest-api
+    ports:
+      - 8080:8080
+    restart: always
+    env_file:
+      - local.env
+    depends_on:
+      - mysql
+    networks:
+      - blog-network
+
+networks:
+  blog-network:
+    driver: bridge
