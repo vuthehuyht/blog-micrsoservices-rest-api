@@ -53,8 +53,9 @@ jobs:
 #      - test
     steps:
       - name: Test command
+        if: github.event.pull_request.edited
         run: |
-          echo ${{ github.event.pull_request.edited }}
+          echo ahihi
 #    runs-on: ubuntu-latest
 #    needs:
 #      - build
