@@ -14,6 +14,10 @@ on:
     branches:
       - main
       - dev
+    types:
+      - opened
+      - reopened
+      - closed
     workflow_dispatch:
 
 jobs:
@@ -44,6 +48,16 @@ jobs:
 #          cache: maven
 #      - name: Run unit test
 #        run: mvn -f pom.xml test
+
+  printJob:
+    name: Print event
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dump GitHub context
+        env:
+          GITHUB_CONTEXT: ${{ toJson(github) }}
+        run: |
+          echo "$GITHUB_CONTEXT"
 
   build-docker:
 #    if: github.event.pull_request.opened == true
