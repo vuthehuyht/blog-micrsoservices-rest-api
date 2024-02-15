@@ -11,10 +11,6 @@ name: Blog Microservices CI with Maven
 on:
   push:
   pull_request:
-    branches:
-      - main
-      - dev
-    workflow_dispatch:
 
 jobs:
 #  build:
