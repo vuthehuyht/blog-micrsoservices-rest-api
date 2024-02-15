@@ -53,7 +53,7 @@ jobs:
 #      - test
     steps:
       - name: Test command
-        if: github.event.pull_request.edited
+        if: github.event.pull_request.opened
         run: |
           echo ahihi
 #    runs-on: ubuntu-latest
