@@ -14,6 +14,8 @@ on:
     branches:
       - main
       - dev
+    types:
+      - closed
 
 jobs:
   build:
@@ -45,7 +47,6 @@ jobs:
         run: mvn -f pom.xml test
 
   build-push-to-dockerhub:
-    if: github.event_name.pull_request.merged == true && github.event_name == 'pull_request' && github.event.action == 'closed'
     runs-on: ubuntu-latest
     needs:
       - build
@@ -71,3 +72,4 @@ jobs:
           push: true
           tags: ${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
+        if: github.event.pull_request.merged
