@@ -55,7 +55,7 @@ jobs:
 #      - test
     steps:
       - name: Test command
-        run: echo ${{ github.event }}
+        run: echo ${{ github.event.pull_request }}
 #    runs-on: ubuntu-latest
 #    needs:
 #      - build
