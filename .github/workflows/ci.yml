@@ -73,4 +73,3 @@ jobs:
           push: true
           tags: ${{ github.sha }}
           labels: ${{ steps.meta.outputs.labels }}
-        if: github.event.pull_request.merged
