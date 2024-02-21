@@ -93,6 +93,6 @@ public class UserControllerTest {
 
         mockMvc.perform(post("/api/v1/user/register").contentType(MediaType.APPLICATION_JSON_VALUE)
                         .content(objectMapper.writeValueAsBytes(request)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 }
