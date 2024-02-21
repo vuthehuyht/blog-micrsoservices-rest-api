@@ -3,6 +3,7 @@ package tech.vuthehuyht.blogrestapi.controller;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,6 @@ public class UserController {
     @PostMapping(path = "/register")
     public ResponseEntity<Object> register(@Valid @RequestBody UserRequest userRequest) {
         log.info("Intercept registration new user");
-        return ResponseEntity.ok(userService.createUser(userRequest));
+        return new ResponseEntity<>(userService.createUser(userRequest), HttpStatus.CREATED);
     }
 }
