@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,6 +14,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsUtils;
 import tech.vuthehuyht.blogrestapi.config.JwtConfig;
 import tech.vuthehuyht.blogrestapi.dto.request.AuthenticationRequest;
 import tech.vuthehuyht.blogrestapi.dto.response.AuthenticationResponse;
@@ -33,7 +35,7 @@ public class JwtFilter extends AbstractAuthenticationProcessingFilter {
     private final CustomUserDetailService customUserDetailService;
 
     public JwtFilter(ObjectMapper objectMapper, JwtService jwtService, JwtConfig jwtConfig, CustomUserDetailService customUserDetailService, AuthenticationManager authenticationManager) {
-        super(new AntPathRequestMatcher(jwtConfig.getUrl(), "POST"));
+        super(new AntPathRequestMatcher(jwtConfig.getUrl()));
         setAuthenticationManager(authenticationManager);
         this.objectMapper = objectMapper;
         this.jwtService = jwtService;
@@ -44,6 +46,16 @@ public class JwtFilter extends AbstractAuthenticationProcessingFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException, IOException, ServletException {
         log.info("Attempt Authentication");
+
+        if (CorsUtils.isPreFlightRequest(request)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            return null;
+        }
+
+        if (!request.getMethod().equals(HttpMethod.POST.name())) {
+            response.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return null;
+        }
 
         AuthenticationRequest authenticationRequest = objectMapper
                 .readValue(request.getInputStream(), AuthenticationRequest.class);
